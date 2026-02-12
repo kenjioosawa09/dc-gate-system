@@ -14,6 +14,7 @@ export default function App() {
   });
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const[error, setError] = useState("");
 
   //入力が変わったときに呼ぶ関数
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
@@ -25,6 +26,13 @@ export default function App() {
 };
 
 const handleSubmit = (e: React.FormEvent<HTMLFormElement>)=> {e.preventDefault();
+
+//エラー処理
+if(form.userID ==="" || form.password ===""){
+  setError("ユーザーIDとパスワードを入力してください");
+  return;
+}
+  setError("");
   console.log("送信内容:",form);
   alert(`${form.userID}さん、${form.location}にログインしました。`);
   setIsLoggedIn(true);
