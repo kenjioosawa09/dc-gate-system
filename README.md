@@ -1,16 +1,27 @@
-# React + Vite
+# DC入館管理システム
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+データセンターの入退館業務を効率化するための管理アプリケーションです。
 
-Currently, two official plugins are available:
+## 🚀 公開URL
+[https://dc-gate-system.vercel.app/](https://dc-gate-system.vercel.app/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📝 概要
+現在、勤務先のデータセンターで行われている「紙ベースの入館管理」をデジタル化し、オペレーター室からリアルタイムで管理・閲覧できるようにすることを目的としています。
 
-## React Compiler
+##  主な機能
+- **ログイン機能**: 入館者・管理者それぞれの権限でログイン可能
+- **入館申請管理（実装予定）**: 申請書のデジタル表示およびデータベースへの保存
+- **お知らせ表示（実装予定）**: データセンター内の連絡事項を一覧表示
+- **入退館ログ閲覧（実装予定）**: 日付ごとの入退館者情報のフィルタリング機能
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+##  使用技術
+- **Frontend**: React, TypeScript
+- **Build Tool**: Vite
+- **Deployment**: Vercel
 
-## Expanding the ESLint configuration
+##  開発の動機
+私の勤務するデーターセンターでは、受付窓口での紙による入館管理が主流です。
+しかし、現場のオペレーターが状況を確認するには、その都度ビル5階の受付窓口まで足を運ぶ必要があり、大きな業務負担となっていました。
+この状況をブラウザ上での一括管理に置き換えることで、オペレーター室から直接状況を把握し、現場の負担を劇的に軽減したいと考え開発に至りました。
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+##  こだわった点（随時更新）
