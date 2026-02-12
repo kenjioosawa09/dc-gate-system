@@ -34,7 +34,7 @@ const handleSubmit = (e: React.FormEvent<HTMLFormElement>)=> {e.preventDefault()
   if(isLoggedIn){
     return(
       <div style={{padding:"20px"}}>
-        <h1>ログイン中</h1>
+        <h1>ログン中</h1>
         <p>ようこそ!{form.userID}さん！</p>
         <button onClick={()=> setIsLoggedIn(false)}>ログアウト</button>
         </div>
