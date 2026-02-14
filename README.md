@@ -17,7 +17,7 @@
 ##  実装状況
 - [x] プロジェクトの初期構築 (Vite + React + TypeScript)
 - [x] GitHub / Vercel へのデプロイ環境構築
-- [x] URLを変えて画面を遷移させる処理の実装(React Router)
+- [x] URLを変えて画面を遷移させる処理の実装(https://reactrouter.com/)
 - [ ] ログイン画面のデザイン
 - [ ] ログイン機能の実装 (Firebase等)
 - [x] ログイン失敗時のエラー処理の実装
