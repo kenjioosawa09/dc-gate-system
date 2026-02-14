@@ -1,4 +1,5 @@
 import React, {useState } from 'react';
+import{BrowserRouter, Routes, Route, useNavigate} from 'react-router-dom';
 
 interface LoginForm{
   userID: string;
@@ -6,54 +7,34 @@ interface LoginForm{
   location:"第1DC" | "第2DC" | "第3DC";
 }
 
-export default function App() {
-  const [form, setForm] = useState<LoginForm>  ({
-    userID:"",
-    password:"",
-    location:"第1DC"
-  });
+//ログイン用コンポーネント
+function LoginPage({onLoginSuccess}:{onLoginSuccess:(data:LoginForm)=>void}){
+  const[form, setForm] = useState<LoginForm>({ userID:"", password:"", location:"第1DC"});
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const[error, setError] = useState("");
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const{name,value} = e.target;
+    setForm({...form,[name]: value});
+  };
 
-  //入力が変わったときに呼ぶ関数
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
-    {
-      const{name,value} = e.target;
-
-      //フォームのname項目だけ更新
-      setForm({...form,[name]:value});
-};
-
-const handleSubmit = (e: React.FormEvent<HTMLFormElement>)=> {e.preventDefault();
-
-//エラー処理
-if(form.userID ==="" || form.password ===""){
-  setError("ユーザーIDとパスワードを入力してください");
-  return;
-}
-  setError("");
-  console.log("送信内容:",form);
-  alert(`${form.userID}さん、${form.location}にログインしました。`);
-  setIsLoggedIn(true);
-};
-
-//ログイン済みの場合表示
-  if(isLoggedIn){
-    return(
-      <div style={{padding:"20px"}}>
-        <h1>ログイン中</h1>
-        <p>ようこそ!{form.userID}さん！</p>
-        <button onClick={()=> setIsLoggedIn(false)}>ログアウト</button>
-        </div>
-    );
+const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  if(form.userID ==="" || form.password ===""){
+    setError("ユーザーIDとパスワードを入力してください");
+    return;
   }
+  setError("");
+  onLoginSuccess(form); //APPコンポーネントにログイン成功を通知
+  navigate("/dashboard"); //URLを切り替え
+};
 
-  return (
-    <div style={{padding:"20px"}}>
-      <h1>入館管理システム</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
+//ログインしていない場合の表示
+return(
+  <div style={{padding:"20px"}}>
+    <h1>入館管理システム</h1>
+    <form onSubmit={handleSubmit}>
+      <div>
           <label>ユーザーID:</label>
           <input name="userID" value={form.userID} onChange={handleChange}/>
         </div>
@@ -69,14 +50,40 @@ if(form.userID ==="" || form.password ===""){
             <option value="第3DC">第3DC</option>
           </select>
         </div>
-        <button type="submit" style={{marginTop:"10px"}}>ログイン</button>
-        </form>
+        {error && <p style ={{color: "red", fontSize:"14px"}}>{error}</p>}
 
-        {/*以下、動作確認用。リリース時は削除すること*/}
-        <hr/>
-        <h3>入力確認(stateの状態)</h3>
-        <pre>{JSON.stringify(form,null,2)}</pre>
-        {/*ここまで削除*/}
+        <button type="submit" style={{marginTop:"10px"}}>ログイン</button>
+    </form>
+    <hr/>
+    <h3>入力確認(stateの状態)</h3>
+    <pre>{JSON.stringify(form,null,2)}</pre>
+  </div>
+ );
+}
+
+function DashboardPage({user}:{user: LoginForm | null}){
+  const navigate = useNavigate();
+
+  return(
+    <div style={{padding:"20px"}}>
+      <h1>ダッシュボード</h1>
+      <p>ようこそ。{user?.userID}さん</p>
+      <p>DC:{user?.location}</p>
+      <button onClick={() => navigate("/")}>ログアウト</button>
     </div>
   );
-}//App
+}
+
+export default function App(){
+    const[loggedInUser, setLoggedInUser] = useState<LoginForm | null>(null);
+
+    return(
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<LoginPage onLoginSuccess={setLoggedInUser}/>} />
+          <Route path="/dashboard" element={<DashboardPage user={loggedInUser}/>}/>
+        </Routes>
+      </BrowserRouter>
+    );
+}
+
