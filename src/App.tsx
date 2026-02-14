@@ -1,5 +1,5 @@
 import React, {useState } from 'react';
-import{BrowserRouter, Routes, Route, useNavigate} from 'react-router-dom';
+import{BrowserRouter, Routes, Route, useNavigate, Navigate} from 'react-router-dom';
 
 interface LoginForm{
   userID: string;
@@ -69,7 +69,7 @@ function DashboardPage({user}:{user: LoginForm | null}){
       <h1>ダッシュボード</h1>
       <p>ようこそ。{user?.userID}さん</p>
       <p>DC:{user?.location}</p>
-      <button onClick={() => navigate("/")}>ログアウト</button>
+      <button onClick={() => navigate("/login")}>ログアウト</button>
     </div>
   );
 }
@@ -80,7 +80,8 @@ export default function App(){
     return(
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<LoginPage onLoginSuccess={setLoggedInUser}/>} />
+          <Route path="/" element={<Navigate to="/login" replace/>}/> 
+          <Route path="/login" element={<LoginPage onLoginSuccess={setLoggedInUser}/>} />
           <Route path="/dashboard" element={<DashboardPage user={loggedInUser}/>}/>
         </Routes>
       </BrowserRouter>
