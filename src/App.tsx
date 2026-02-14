@@ -82,7 +82,11 @@ export default function App(){
         <Routes>
           <Route path="/" element={<Navigate to="/login" replace/>}/> 
           <Route path="/login" element={<LoginPage onLoginSuccess={setLoggedInUser}/>} />
-          <Route path="/dashboard" element={<DashboardPage user={loggedInUser}/>}/>
+          
+          {/*ダッシュボードに直接飛ばせない*/}
+          <Route path="/dashboard" element={loggedInUser ? (<DashboardPage user={loggedInUser} />) : (<Navigate to="/login" replace/>)
+          }
+        />
         </Routes>
       </BrowserRouter>
     );
