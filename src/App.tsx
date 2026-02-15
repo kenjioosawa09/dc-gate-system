@@ -61,30 +61,49 @@ return(
  );
 }
 
-function DashboardPage({user}:{user: LoginForm | null}){
+function DashboardPage({user, onLogout}:{user: LoginForm | null, onLogout:()=> void}){
   const navigate = useNavigate();
+
+  const handleLogoutClick = () => {
+    onLogout();
+    navigate("/login");
+  };
 
   return(
     <div style={{padding:"20px"}}>
       <h1>ダッシュボード</h1>
       <p>ようこそ。{user?.userID}さん</p>
       <p>DC:{user?.location}</p>
-      <button onClick={() => navigate("/login")}>ログアウト</button>
+      <button onClick={handleLogoutClick}>ログアウト</button>
     </div>
   );
 }
 
 export default function App(){
-    const[loggedInUser, setLoggedInUser] = useState<LoginForm | null>(null);
+    const[loggedInUser, setLoggedInUser] = useState<LoginForm | null>(()=>{
+      const saved = localStorage.getItem("user");
+      return saved ? JSON.parse(saved) : null;
+    });
+
+    const handleLogin =(user: LoginForm) => {
+      setLoggedInUser(user);
+      localStorage.setItem("user", JSON.stringify(user));
+    }
+
+    const handleLogout = () =>{
+      setLoggedInUser(null);
+      localStorage.removeItem("user");
+    };
 
     return(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Navigate to="/login" replace/>}/> 
-          <Route path="/login" element={<LoginPage onLoginSuccess={setLoggedInUser}/>} />
+          <Route path="/login" element=
+          {<LoginPage onLoginSuccess={handleLogin}/>} />
 
-          {/*ダッシュボードのURL ルーティングガード実装済*/}
-          <Route path="/dashboard" element={loggedInUser ? (<DashboardPage user={loggedInUser} />) : (<Navigate to="/login" replace/>)
+          {/*ダッシュボードのURL*/}
+          <Route path="/dashboard" element={loggedInUser ? (<DashboardPage user={loggedInUser} onLogout={handleLogout}/>) : (<Navigate to="/login" replace/>)
           }
         />
         </Routes>
