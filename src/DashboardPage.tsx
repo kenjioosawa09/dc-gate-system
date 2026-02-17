@@ -16,18 +16,6 @@ export function DashboardPage({user, onLogout, onEntry, logs}:{user: LoginForm |
       <h1>ダッシュボード</h1>
       <p>ようこそ。{user?.userID}さん</p>
       <p>DC:{user?.location}</p>
-      
-      <div style={{margin: "20px 0"}}>
-        <button onClick={() => {
-          if(user){
-            onEntry(user.userID, user.location);
-            alert("入館が記録されました");
-          }
-        }}
-        style={{padding:"10px 20px", cursor:"pointer", backgroundColor: "#4caf50", color:"white", border:"none", borderRadius:"4px"}}>
-          入館ボタン
-        </button>
-      </div>
 
       {user?.role === 'admin' &&(
         <div style={{marginTop: "20px",padding: "15px", border: "2px solid #ff4444", borderRadius:"8px", backgroundColor:"fff5f5"}}>
