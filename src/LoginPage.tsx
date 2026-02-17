@@ -3,7 +3,7 @@ import {useNavigate} from 'react-router-dom';
 import {LoginForm} from'./types';
 
 export function LoginPage({onLoginSuccess}:{onLoginSuccess:(data:LoginForm)=> void}){
-  const[form, setForm] = useState<LoginForm>({userID:"",password:"", location:"第1DC"});
+  const[form, setForm] = useState<LoginForm>({userID:"",password:"", location:"第1DC", role:"user"});
   const[error, setError] = useState("");
   const navigate = useNavigate();
   
@@ -14,12 +14,20 @@ export function LoginPage({onLoginSuccess}:{onLoginSuccess:(data:LoginForm)=> vo
   
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const userRole: 'admin' | 'user' = form.userID === 'admin' ? 'admin' : 'user';
+
     if(form.userID ==="" || form.password ===""){
       setError("ユーザーIDとパスワードを入力してください");
       return;
     }
+
+    const loginData: LoginForm = {
+      ...form,
+      role: userRole,
+    };
+
     setError("");
-    onLoginSuccess(form); //APPコンポーネントにログイン成功を通知
+    onLoginSuccess(loginData); //APPコンポーネントにログイン成功を通知
     navigate("/dashboard"); //URLを切り替え
   };
   
