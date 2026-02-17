@@ -4,8 +4,11 @@ import{HashRouter, Routes, Route, Navigate} from 'react-router-dom';
 import{LoginForm} from './types';
 import {LoginPage} from './LoginPage';
 import {DashboardPage} from './DashboardPage';
+import {EntryLog} from './types';
 
 export default function App(){
+
+  //ユーザーデータをローカルストレージから読み込む。初回はnullになる
     const[loggedInUser, setLoggedInUser] = useState<LoginForm | null>(()=>{
      try{
       const saved = localStorage.getItem("user");
@@ -18,11 +21,25 @@ export default function App(){
     }
   });
 
+    //入館ログの管理
+    const[logs, setLogs] = useState<EntryLog[]>([]);
+    const addLog = (userID: string, location: string) =>{
+    const newLog: EntryLog ={
+        id: Date.now().toString(),
+        userID: userID,
+        location: location,
+        timestamp: new Date().toLocaleString(),
+      };
+      setLogs([newLog,...logs]);
+    }
+
+   //ログイン成功時の処理
     const handleLogin =(user: LoginForm) => {
       setLoggedInUser(user);
       localStorage.setItem("user", JSON.stringify(user));
     }
 
+    //ログアウト処理
     const handleLogout = () =>{
       setLoggedInUser(null);
       localStorage.removeItem("user");
@@ -36,7 +53,7 @@ export default function App(){
           {<LoginPage onLoginSuccess={handleLogin}/>} />
 
           {/*ダッシュボードのURL*/}
-          <Route path="/dashboard" element={loggedInUser ? (<DashboardPage user={loggedInUser} onLogout={handleLogout}/>) : (<Navigate to="/login" replace/>)
+          <Route path="/dashboard" element={loggedInUser ? (<DashboardPage user={loggedInUser} onLogout={handleLogout} onEntry={addLog} logs={logs} />) : (<Navigate to="/login" replace/>)
           }
         />
         </Routes>
