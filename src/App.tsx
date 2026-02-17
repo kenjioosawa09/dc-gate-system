@@ -34,9 +34,10 @@ export default function App(){
     }
 
    //ログイン成功時の処理
-    const handleLogin =(user: LoginForm) => {
-      setLoggedInUser(user);
-      localStorage.setItem("user", JSON.stringify(user));
+    const handleLogin =(loginData: LoginForm) => {
+      setLoggedInUser(loginData);
+      addLog(loginData.userID, loginData.location);
+      localStorage.setItem("user", JSON.stringify(loginData));
     }
 
     //ログアウト処理
