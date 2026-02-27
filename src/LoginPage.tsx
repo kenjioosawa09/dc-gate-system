@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {LoginForm} from'./types';
+import{db} from './firebase';
+import{ collection, addDoc, serverTimestamp}  from 'firebase/firestore';
 
 export function LoginPage({onLoginSuccess}:{onLoginSuccess:(data:LoginForm)=> void}){
   const[form, setForm] = useState<LoginForm>({userID:"",password:"", location:"第1DC", role:"user"});
@@ -12,7 +14,7 @@ export function LoginPage({onLoginSuccess}:{onLoginSuccess:(data:LoginForm)=> vo
       setForm({...form,[name]: value});
     };
   
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const userRole: 'admin' | 'user' = form.userID === 'admin' ? 'admin' : 'user';
 
@@ -21,15 +23,27 @@ export function LoginPage({onLoginSuccess}:{onLoginSuccess:(data:LoginForm)=> vo
       return;
     }
 
-    const loginData: LoginForm = {
-      ...form,
-      role: userRole,
-    };
+    try{
+      await addDoc(collection(db, "Login_logs"),{
+        userID: form.userID,
+        location: form.location,
+        role: userRole,
+        timestamp: serverTimestamp(),
+      });
+      console.log("ログイン履歴をFirebaseに保存しました");
+
+      const loginData: LoginForm = {
+        ...form,
+        role: userRole,
+      };
 
     setError("");
     onLoginSuccess(loginData); //APPコンポーネントにログイン成功を通知
     navigate("/dashboard"); //URLを切り替え
-  };
+  } catch(err){
+    console.error("Firebaseへの保存に失敗しました");
+  }
+};
   
   //ログインしていない場合の表示
   return(
