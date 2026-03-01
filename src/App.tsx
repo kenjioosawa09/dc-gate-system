@@ -1,25 +1,34 @@
-import {useState } from 'react';
+import {useEffect, useState } from 'react';
 import{HashRouter, Routes, Route, Navigate} from 'react-router-dom'; 
 //HashRouterは練習用なので、本番環境にした場合はBrowserRouterに変更する必要あり
 import{LoginForm} from './types';
 import {LoginPage} from './LoginPage';
 import {DashboardPage} from './DashboardPage';
 import {EntryLog} from './types';
+import { db } from './firebase';
+import {doc, getDoc, collection, addDoc, serverTimestamp} from "firebase/firestore"; 
 
 export default function App(){
 
   //ユーザーデータをローカルストレージから読み込む。初回はnullになる
-    const[loggedInUser, setLoggedInUser] = useState<LoginForm | null>(()=>{
-     try{
-      const saved = localStorage.getItem("user");
-      return saved ? JSON.parse(saved) : null;
-    }
-    //データの読み込みに失敗した場合のエラーハンドリング
-    catch(e){
-      console.error("データの読み込みに失敗しました");
-      return null;
-    }
-  });
+    const[loggedInUser, setLoggedInUser] = useState<LoginForm | null>(null);
+
+    useEffect(()=>{
+      const fetchUser = async () => {
+        try{
+          const docRef = doc(db, "users", "currentUser");
+          const docSnap = await getDoc(docRef);
+
+          if(docSnap.exists()){
+            setLoggedInUser(docSnap.data() as LoginForm);
+          }
+        } catch (e){
+          console.error("Firebaseからの読み込みに失敗しました", e);
+        }
+         };
+         fetchUser();
+    },[]); 
+     
 
     //入館ログの管理
     const[logs, setLogs] = useState<EntryLog[]>([]);
