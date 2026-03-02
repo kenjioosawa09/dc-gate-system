@@ -1,16 +1,16 @@
 import {useEffect, useState } from 'react';
-import{HashRouter, Routes, Route, Navigate} from 'react-router-dom'; 
+import{HashRouter, Routes, Route, Navigate, data} from 'react-router-dom'; 
 //HashRouterは練習用なので、本番環境にした場合はBrowserRouterに変更する必要あり
 import{LoginForm} from './types';
 import {LoginPage} from './LoginPage';
 import {DashboardPage} from './DashboardPage';
 import {EntryLog} from './types';
 import { db } from './firebase';
-import {doc, getDoc, collection, addDoc, serverTimestamp} from "firebase/firestore"; 
+import {doc, getDoc, getDocs, query, orderBy, collection, addDoc, serverTimestamp, QuerySnapshot} from "firebase/firestore"; 
 
 export default function App(){
 
-  //ユーザーデータをローカルストレージから読み込む。初回はnullになる
+  //ユーザーデータをfirebaseから読み込む。初回はnullになる
     const[loggedInUser, setLoggedInUser] = useState<LoginForm | null>(null);
 
     useEffect(()=>{
