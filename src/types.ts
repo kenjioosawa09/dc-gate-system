@@ -1,3 +1,5 @@
+import { Timestamp } from "firebase/firestore"; 
+
 export interface LoginForm {
   userID: string;
   password: string;
@@ -9,5 +11,5 @@ export interface EntryLog{
   id: string;
   userID: string;
   location: string;
-  timestamp: string;
+  timestamp: Timestamp | any;
 }
