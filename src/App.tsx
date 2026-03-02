@@ -28,29 +28,6 @@ export default function App(){
          };
          fetchUser();
     },[]); 
-
-    const fetchLogs = async () => {
-      try{
-        const q =query(collection(db, "Login_logs"), orderBy("timestamp", "desc"));
-        const querySnapshot = await getDocs(q);
-
-        const fetchedLogs = querySnapshot.docs.map(doc => {
-          const data = doc.data() as EntryLog;
-
-          return{
-            ...data,
-            id: doc.id,
-            timestamp: data.timestamp?.toDate().toLocaleString() || "日時不明",
-          };
-          });
-
-        setLogs (fetchedLogs);
-        console.log("ログを取得しました", fetchedLogs);
-       } catch (e) {
-        console.error("ログの取得に失敗しました", e);
-        alert("履歴の読み込みに失敗しました。");
-      }
-    };
      
 
     //入館ログの管理
