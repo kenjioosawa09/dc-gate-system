@@ -4,6 +4,7 @@ import{HashRouter, Routes, Route, Navigate, data} from 'react-router-dom';
 import{LoginForm} from './types';
 import {LoginPage} from './LoginPage';
 import {DashboardPage} from './DashboardPage';
+import {LoginHistoryPage} from './LoginHistoryPage';
 import {EntryLog} from './types';
 import { db } from './firebase';
 import {doc, getDoc, getDocs, query, orderBy, collection, addDoc, serverTimestamp, QuerySnapshot} from "firebase/firestore"; 
@@ -66,6 +67,8 @@ export default function App(){
           <Route path="/dashboard" element={loggedInUser ? (<DashboardPage user={loggedInUser} onLogout={handleLogout} onEntry={addLog} logs={logs} />) : (<Navigate to="/login" replace/>)
           }
         />
+
+        <Route path="/history" element={loggedInUser ? <LoginHistoryPage /> : <Navigate to="/login"/>} />
         </Routes>
       </HashRouter>
     );

@@ -46,8 +46,11 @@ export function DashboardPage({user, onLogout} : {user: LoginForm | null, onLogo
         <div style={{marginTop: "20px",padding: "15px", border: "2px solid #ff4444", borderRadius:"8px", backgroundColor:"fff5f5"}}>
           <h3 style={{color:"ff4444", marginTop: "0"}}>【管理者専用メニュー】</h3>
           <p>全ユーザーの入館履歴を閲覧できます。</p>
+          <button onClick={() => navigate("/history")} style={{backgroundColor: "#007bff", color: "white", padding:"10px",
+            border: "none", borderRadius: "4px", cursor: "pointer" }}>ログイン履歴閲覧</button>
+
           <ul style={{listStyle: "none", padding:0, maxHeight:"200px", overflowY: "auto"}}>
-            {logs.length === 0 ? (<li>ログがありません</li>) : logs.map(log => <li key={log.id}>{log.timestamp} - {log.userID} が {log.location} に入館しました</li>)}
+            {logs.length === 40 ? (<li>ログがありません</li>) : logs.map(log => <li key={log.id}>{log.timestamp} - {log.userID} が {log.location} に入館しました</li>)}
           </ul>
           <button onClick={fetchLogs}
           style={{backgroundColor:"#ff4444", color:"white", border:"none", padding:"8px 16px", borderRadius:"4px",cursor:"pointer"}}>入館ログを確認する</button>
