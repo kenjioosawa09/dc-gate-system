@@ -43,10 +43,26 @@ export function DashboardPage({user, onLogout} : {user: LoginForm | null, onLogo
       <p>DC:{user?.location}</p>
 
       {user?.role === 'admin' &&(
-        <div style={{marginTop: "20px",padding: "15px", border: "2px solid #ff4444", borderRadius:"8px", backgroundColor:"fff5f5"}}>
-          <h3 style={{color:"ff4444", marginTop: "0"}}>【管理者専用メニュー】</h3>
-          <button onClick={() => navigate("/history")} style={{backgroundColor: "#007bff", color: "white", padding:"10px",
-            border: "none", borderRadius: "4px", cursor: "pointer" }}>ログイン履歴閲覧</button>
+        
+        <div style={{
+          marginTop: "20px",
+          padding: "15px",
+          border: "2px solid #ff4444",
+          borderRadius:"8px",
+          backgroundColor:"fff5f5"
+          }}>
+          <h3 style={{ color:"ff4444",marginTop: "0" }}>【管理者専用メニュー】</h3>
+          <button onClick={() => navigate("/history")} 
+            style={{
+              backgroundColor: "#007bff",
+              color: "white",
+              padding:"10px",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer"
+               }}>
+              ログイン履歴閲覧
+          </button>
         </div>
       )}
 
