@@ -68,6 +68,7 @@ export default function App(){
           }
         />
 
+         {/*ログイン履歴閲覧ページのURL*/}
         <Route path="/history" element={loggedInUser ? <LoginHistoryPage /> : <Navigate to="/login"/>} />
         </Routes>
       </HashRouter>
